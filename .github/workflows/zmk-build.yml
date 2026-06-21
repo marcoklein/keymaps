@@ -51,16 +51,16 @@ jobs:
           west update
 
       - name: Build corne_left
-        working-directory: /workspace
+        working-directory: /workspace/zmk
         run: |
-          west build -s zmk/app -d build/left -b nice_nano_v2 -- \
+          west build -s app -d build/left -b nice_nano_v2 -- \
             -DSHIELD=corne_left \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/corne-zmk/config"
 
       - name: Build corne_right
-        working-directory: /workspace
+        working-directory: /workspace/zmk
         run: |
-          west build -s zmk/app -d build/right -b nice_nano_v2 -- \
+          west build -s app -d build/right -b nice_nano_v2 -- \
             -DSHIELD=corne_right \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/corne-zmk/config"
 
@@ -69,8 +69,8 @@ jobs:
         with:
           name: corne-firmware
           path: |
-            /workspace/build/left/zephyr/zmk.uf2
-            /workspace/build/right/zephyr/zmk.uf2
+            /workspace/zmk/build/left/zephyr/zmk.uf2
+            /workspace/zmk/build/right/zephyr/zmk.uf2
 
   build-babbit36:
     needs: detect
@@ -90,22 +90,22 @@ jobs:
       - name: Setup ZMK workspace
         run: |
           mkdir -p /workspace && cd /workspace
-          git clone --branch main https://github.com/zmkfirmware/zmk
+          git clone https://github.com/zmkfirmware/zmk
           cd zmk
           west init -l app
           west update
 
       - name: Build babbit36
-        working-directory: /workspace
+        working-directory: /workspace/zmk
         run: |
-          west build -s zmk/app -d build/babbit36 -b xiao_ble//zmk -- \
+          west build -s app -d build/babbit36 -b xiao_ble//zmk -- \
             -DSHIELD=babbit36 \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/babbit36-zmk/config"
 
       - name: Build settings_reset
-        working-directory: /workspace
+        working-directory: /workspace/zmk
         run: |
-          west build -s zmk/app -d build/settings_reset -b xiao_ble//zmk -- \
+          west build -s app -d build/settings_reset -b xiao_ble//zmk -- \
             -DSHIELD=settings_reset \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/babbit36-zmk/config"
 
@@ -114,5 +114,5 @@ jobs:
         with:
           name: babbit36-firmware
           path: |
-            /workspace/build/babbit36/zephyr/zmk.uf2
-            /workspace/build/settings_reset/zephyr/zmk.uf2
+            /workspace/zmk/build/babbit36/zephyr/zmk.uf2
+            /workspace/zmk/build/settings_reset/zephyr/zmk.uf2
