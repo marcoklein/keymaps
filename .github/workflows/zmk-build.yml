@@ -39,30 +39,38 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/west
-          key: zmk-west-${{ runner.os }}-${{ hashFiles('corne-zmk/west.yml') }}
-          restore-keys: zmk-west-${{ runner.os }}-
+          key: zmk-west-${{ runner.os }}-corne-${{ hashFiles('corne-zmk/west.yml') }}
+          restore-keys: zmk-west-${{ runner.os }}-corne-
 
-      - name: West init and update
-        working-directory: corne-zmk
+      - name: Setup ZMK workspace
         run: |
-          west init -l .
+          mkdir -p /workspace && cd /workspace
+          git clone --depth 1 --branch v0.3 https://github.com/zmkfirmware/zmk
+          cd zmk
+          west init -l app
           west update
 
       - name: Build corne_left
-        working-directory: corne-zmk
-        run: west build -s zmk/app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
+        working-directory: /workspace
+        run: |
+          west build -s zmk/app -d build/left -b nice_nano_v2 -- \
+            -DSHIELD=corne_left \
+            -DZMK_CONFIG="${GITHUB_WORKSPACE}/corne-zmk/config"
 
       - name: Build corne_right
-        working-directory: corne-zmk
-        run: west build -s zmk/app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
+        working-directory: /workspace
+        run: |
+          west build -s zmk/app -d build/right -b nice_nano_v2 -- \
+            -DSHIELD=corne_right \
+            -DZMK_CONFIG="${GITHUB_WORKSPACE}/corne-zmk/config"
 
       - name: Archive firmware
         uses: actions/upload-artifact@v4
         with:
           name: corne-firmware
           path: |
-            corne-zmk/build/left/zephyr/zmk.uf2
-            corne-zmk/build/right/zephyr/zmk.uf2
+            /workspace/build/left/zephyr/zmk.uf2
+            /workspace/build/right/zephyr/zmk.uf2
 
   build-babbit36:
     needs: detect
@@ -76,27 +84,35 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/west
-          key: zmk-west-${{ runner.os }}-${{ hashFiles('babbit36-zmk/west.yml') }}
-          restore-keys: zmk-west-${{ runner.os }}-
+          key: zmk-west-${{ runner.os }}-babbit36-${{ hashFiles('babbit36-zmk/west.yml') }}
+          restore-keys: zmk-west-${{ runner.os }}-babbit36-
 
-      - name: West init and update
-        working-directory: babbit36-zmk
+      - name: Setup ZMK workspace
         run: |
-          west init -l .
+          mkdir -p /workspace && cd /workspace
+          git clone --branch main https://github.com/zmkfirmware/zmk
+          cd zmk
+          west init -l app
           west update
 
       - name: Build babbit36
-        working-directory: babbit36-zmk
-        run: west build -s zmk/app -d build/babbit36 -b xiao_ble//zmk -- -DSHIELD=babbit36
+        working-directory: /workspace
+        run: |
+          west build -s zmk/app -d build/babbit36 -b xiao_ble//zmk -- \
+            -DSHIELD=babbit36 \
+            -DZMK_CONFIG="${GITHUB_WORKSPACE}/babbit36-zmk/config"
 
       - name: Build settings_reset
-        working-directory: babbit36-zmk
-        run: west build -s zmk/app -d build/settings_reset -b xiao_ble//zmk -- -DSHIELD=settings_reset
+        working-directory: /workspace
+        run: |
+          west build -s zmk/app -d build/settings_reset -b xiao_ble//zmk -- \
+            -DSHIELD=settings_reset \
+            -DZMK_CONFIG="${GITHUB_WORKSPACE}/babbit36-zmk/config"
 
       - name: Archive firmware
         uses: actions/upload-artifact@v4
         with:
           name: babbit36-firmware
           path: |
-            babbit36-zmk/build/babbit36/zephyr/zmk.uf2
-            babbit36-zmk/build/settings_reset/zephyr/zmk.uf2
+            /workspace/build/babbit36/zephyr/zmk.uf2
+            /workspace/build/settings_reset/zephyr/zmk.uf2
