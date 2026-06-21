@@ -1,0 +1,100 @@
+name: Build ZMK firmware
+
+on:
+  push:
+    paths:
+      - 'corne-zmk/**'
+      - 'babbit36-zmk/**'
+      - '.github/workflows/zmk-build.yml'
+  workflow_dispatch:
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      corne: ${{ steps.filter.outputs.corne }}
+      babbit36: ${{ steps.filter.outputs.babbit36 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            corne:
+              - 'corne-zmk/**'
+              - '.github/workflows/zmk-build.yml'
+            babbit36:
+              - 'babbit36-zmk/**'
+              - '.github/workflows/zmk-build.yml'
+
+  build-corne:
+    needs: detect
+    if: ${{ needs.detect.outputs.corne == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/zmkfirmware/zmk-dev-arm:stable
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache west modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/west
+          key: zmk-west-${{ runner.os }}-${{ hashFiles('corne-zmk/config/west.yml') }}
+          restore-keys: zmk-west-${{ runner.os }}-
+
+      - name: West init and update
+        run: |
+          west init -l corne-zmk
+          west update -o=--depth=1
+
+      - name: Build corne_left
+        run: |
+          west build -s zmk/app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
+
+      - name: Build corne_right
+        run: |
+          west build -s zmk/app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
+
+      - name: Archive firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: corne-firmware
+          path: |
+            build/left/zephyr/zmk.uf2
+            build/right/zephyr/zmk.uf2
+
+  build-babbit36:
+    needs: detect
+    if: ${{ needs.detect.outputs.babbit36 == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/zmkfirmware/zmk-dev-arm:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache west modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/west
+          key: zmk-west-${{ runner.os }}-${{ hashFiles('babbit36-zmk/config/west.yml') }}
+          restore-keys: zmk-west-${{ runner.os }}-
+
+      - name: West init and update
+        run: |
+          west init -l babbit36-zmk
+          west update -o=--depth=1
+
+      - name: Build babbit36
+        run: |
+          west build -s zmk/app -d build/babbit36 -b xiao_ble//zmk -- -DSHIELD=babbit36
+
+      - name: Build settings_reset
+        run: |
+          west build -s zmk/app -d build/settings_reset -b xiao_ble//zmk -- -DSHIELD=settings_reset
+
+      - name: Archive firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: babbit36-firmware
+          path: |
+            build/babbit36/zephyr/zmk.uf2
+            build/settings_reset/zephyr/zmk.uf2
