@@ -16,7 +16,6 @@ Keymap source: `babbit36-zmk/` in the `marcoklein/keymaps` repo.
 ### 1. Commit and push
 
 Push changes to `babbit36-zmk/` — this automatically triggers the CI build via `zmk-build.yml`.
-Commit and push:
 
 ```bash
 git add babbit36-zmk/
@@ -26,7 +25,7 @@ git push
 
 ### 2. Trigger GitHub Actions build (if manual trigger needed)
 
-If pushing doesn't trigger the build (e.g. workflow file changed), trigger manually:
+Only needed if pushing didn't trigger the build (e.g. push to a different directory):
 
 ```bash
 gh workflow run "zmk-build.yml" -R marcoklein/keymaps
@@ -46,19 +45,14 @@ Timeout: 360000ms (6 minutes). If conclusion is not `success`, read the build lo
 
 ### 4. Download firmware
 
-Ensure `.tmp` folder exists to download.
-
 ```bash
 rm -rf .tmp/babbit36-firmware
 gh run download <run_id> -R marcoklein/keymaps --dir .tmp/babbit36-firmware -n babbit36-firmware
 ```
 
-The build produces two `.uf2` files:
-
-- `zmk.uf2` (babbit36 build) — actual firmware
-- `zmk.uf2` (settings_reset build) — clears Bluetooth pairings
-
-Both are in `.tmp/babbit36-firmware/`.
+Produces two files:
+- `.tmp/babbit36-firmware/babbit36.uf2` — actual firmware
+- `.tmp/babbit36-firmware/settings_reset.uf2` — clears Bluetooth pairings
 
 ### 5. Flash firmware
 
@@ -75,7 +69,7 @@ If **not mounted** — tell the user to double-tap the reset button on the XIAO 
 If **mounted** — copy the `.uf2` file:
 
 ```bash
-cp .tmp/babbit36-firmware/<file>.uf2 /Volumes/XIAO-SENSE/
+cp .tmp/babbit36-firmware/babbit36.uf2 /Volumes/XIAO-SENSE/
 ```
 
 The `cp` command will produce an **I/O error** (`fcopyfile failed: Input/output error`) — this is NORMAL. The XIAO accepts the file and reboots before `cp` can `fchmod`. Verify success by checking that `/Volumes/XIAO-SENSE` no longer exists:
@@ -92,7 +86,7 @@ Use the settings reset when:
 - Switching between hosts (phone, laptop)
 - After changing BLE config options
 
-Flash `settings_reset` firmware FIRST (same flash steps as above), THEN flash the babbit36 firmware immediately after. The user must double-tap reset between the two flashes.
+Flash `settings_reset.uf2` FIRST (same flash steps as above), THEN flash `babbit36.uf2` immediately after. The user must double-tap reset between the two flashes.
 
 After settings reset, the user must:
 
@@ -122,7 +116,7 @@ The keyboard auto-reboots after each `.uf2` copy. No further action needed. The 
 - **Controller:** Seeed XIAO BLE (nRF52840)
 - **Board name:** `xiao_ble//zmk`
 - **Shield name:** `babbit36`
-- **Matrix:** 4 rows × 10 columns, col2row diodes, 74HC595 shift register on SPI
+- **Matrix:** 4 rows x 10 columns, col2row diodes, 74HC595 shift register on SPI
 - **Thumb keys:** 3 per side (6 total)
 - **One XIAO, one PCB** — both halves integrated on a single board
 - **Same firmware for both halves** — not split left/right like Corne

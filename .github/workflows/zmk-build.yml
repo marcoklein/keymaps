@@ -64,13 +64,17 @@ jobs:
             -DSHIELD=corne_right \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/corne-zmk/config"
 
+      - name: Rename firmware
+        run: |
+          mkdir -p /workspace/firmware
+          cp /workspace/zmk/build/left/zephyr/zmk.uf2 /workspace/firmware/corne_left.uf2
+          cp /workspace/zmk/build/right/zephyr/zmk.uf2 /workspace/firmware/corne_right.uf2
+
       - name: Archive firmware
         uses: actions/upload-artifact@v4
         with:
           name: corne-firmware
-          path: |
-            /workspace/zmk/build/left/zephyr/zmk.uf2
-            /workspace/zmk/build/right/zephyr/zmk.uf2
+          path: /workspace/firmware/
 
   build-babbit36:
     needs: detect
@@ -109,10 +113,14 @@ jobs:
             -DSHIELD=settings_reset \
             -DZMK_CONFIG="${GITHUB_WORKSPACE}/babbit36-zmk/config"
 
+      - name: Rename firmware
+        run: |
+          mkdir -p /workspace/firmware
+          cp /workspace/zmk/build/babbit36/zephyr/zmk.uf2 /workspace/firmware/babbit36.uf2
+          cp /workspace/zmk/build/settings_reset/zephyr/zmk.uf2 /workspace/firmware/settings_reset.uf2
+
       - name: Archive firmware
         uses: actions/upload-artifact@v4
         with:
           name: babbit36-firmware
-          path: |
-            /workspace/zmk/build/babbit36/zephyr/zmk.uf2
-            /workspace/zmk/build/settings_reset/zephyr/zmk.uf2
+          path: /workspace/firmware/

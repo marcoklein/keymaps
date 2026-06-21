@@ -18,7 +18,6 @@ The Corne is a **split keyboard** — left and right halves each have their own 
 ### 1. Commit and push
 
 Push changes to `corne-zmk/` — this automatically triggers the CI build via `zmk-build.yml`.
-Commit and push:
 
 ```bash
 git add corne-zmk/
@@ -28,7 +27,7 @@ git push
 
 ### 2. Trigger GitHub Actions build (if manual trigger needed)
 
-If pushing doesn't trigger the build (e.g. workflow file changed), trigger manually:
+Only needed if pushing didn't trigger the build (e.g. push to a different directory):
 
 ```bash
 gh workflow run "zmk-build.yml" -R marcoklein/keymaps
@@ -53,12 +52,9 @@ rm -rf .tmp/corne-firmware
 gh run download <run_id> -R marcoklein/keymaps --dir .tmp/corne-firmware -n corne-firmware
 ```
 
-The build produces two `.uf2` files:
-
-- `zmk.uf2` (left build) — firmware for the **left** half
-- `zmk.uf2` (right build) — firmware for the **right** half
-
-Both are in `.tmp/corne-firmware/`.
+Produces two files:
+- `.tmp/corne-firmware/corne_left.uf2` — firmware for the **left** half
+- `.tmp/corne-firmware/corne_right.uf2` — firmware for the **right** half
 
 ### 5. Flash both halves
 
@@ -74,7 +70,7 @@ Both are in `.tmp/corne-firmware/`.
 3. If mounted, flash the left firmware:
 
    ```bash
-   cp .tmp/corne-firmware/<left-uf2> /Volumes/NICENANO/
+   cp .tmp/corne-firmware/corne_left.uf2 /Volumes/NICENANO/
    ```
 
 4. The nice!nano reboots (`cp` may produce an I/O error — normal). Verify:
@@ -83,19 +79,19 @@ Both are in `.tmp/corne-firmware/`.
    ls /Volumes/NICENANO 2>/dev/null || echo "Rebooted - flash done"
    ```
 
-5. Unplug USB from left half. Plug USB into **right half**, double-tap reset, and repeat steps 2-4 with the right firmware.
+5. Unplug USB from left half. Plug USB into **right half**, double-tap reset, and repeat steps 2-4 with `corne_right.uf2`.
 
 ### 6. After flashing
 
 - The halves auto-connect to each other via BLE.
-- Plug USB into the **left half** (typically the central/peripheral — if halves don't speak, try the right half instead).
+- Plug USB into the **left half** (typically the central — if halves don't speak, try the right half instead).
 - Wait ~5 seconds for the halves to sync.
 - Select BT profile on the connected half: hold **NAV** (left outer thumb) + press **Q** to select profile 0.
 - Pair from host Bluetooth settings (look for "Corne").
 
 ## Settings reset (clear Bluetooth pairings)
 
-To clear all BLE pairings on a nice!nano (not built by this CI workflow, use the settings_reset UF2 from ZMK docs):
+To clear all BLE pairings on a nice!nano (not built by this CI workflow — use the settings reset UF2 from ZMK docs):
 
 If BLE is unreliable or you switch hosts, you can flash a settings reset UF2:
 
@@ -122,7 +118,7 @@ If BLE is unreliable or you switch hosts, you can flash a settings reset UF2:
 - **Controller:** nice!nano v2 (nRF52840)
 - **Board name:** `nice_nano_v2`
 - **Shield:** `corne_left` / `corne_right`
-- **Matrix:** 3 rows × 6 columns per half (42 keys total)
+- **Matrix:** 3 rows x 6 columns per half (42 keys total)
 - **No TRRS cable** — halves communicate over BLE
 - **Bootloader:** Double-tap reset button to enter UF2 bootloader (mounts as NICENANO volume)
 - **Charging:** Each half has a LiPo battery. Charge via the USB-C port on each half.
