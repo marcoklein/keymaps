@@ -46,7 +46,7 @@ jobs:
         run: |
           cd corne-zmk
           west init -l config
-          west update -o=--depth=1
+          west update
 
       - name: Build corne_left
         run: |
@@ -85,7 +85,7 @@ jobs:
         run: |
           cd babbit36-zmk
           west init -l config
-          west update -o=--depth=1
+          west update
 
       - name: Build babbit36
         run: |
