@@ -8,79 +8,100 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
-// mo: momentary layer
-// lt: layer tap
+#define RAISE  1
+#define LOWER  2
+#define NAV    3
+
+&lt {
+    quick-tap-ms = <200>;
+    flavor = "hold-preferred";
+};
 
 / {
-        behaviors {
-                hml: home_row_mods_left {
-                        compatible = "zmk,behavior-hold-tap";
-                        #binding-cells = <2>;
-                        flavor = "balanced";
-                        tapping-term-ms = <200>; // was 280
-                        quick-tap-ms = <175>;
-                        require-prior-idle-ms = <100>; // was 150
-                        bindings = <&kp>, <&kp>;
-                        // Keys on right side
-                        hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35>;
-                        hold-trigger-on-release;
-                };
-                hmr: home_row_mods_right {
-                        compatible = "zmk,behavior-hold-tap";
-                        #binding-cells = <2>;
-                        flavor = "balanced";
-                        tapping-term-ms = <200>; // was 280
-                        quick-tap-ms = <175>;
-                        require-prior-idle-ms = <100>; // was 150
-                        bindings = <&kp>, <&kp>;
-                        hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29>;
-                        hold-trigger-on-release;
-                };
+    behaviors {
+        hml: home_row_mods_left {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <50>;
+            bindings = <&kp>, <&kp>;
+            // Keys on right half trigger left-side mods
+            hold-trigger-key-positions = <6 7 8 9 10 11 18 19 20 21 22 23 30 31 32 33 34 35>;
+            hold-trigger-on-release;
+        };
+        hmr: home_row_mods_right {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "balanced";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <50>;
+            bindings = <&kp>, <&kp>;
+            // Keys on left half trigger right-side mods
+            hold-trigger-key-positions = <0 1 2 3 4 5 12 13 14 15 16 17 24 25 26 27 28 29>;
+            hold-trigger-on-release;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            bindings = <
+// ╭───────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮
+    &none       &kp Q     &kp W     &kp F     &kp P     &kp B         &kp J     &kp L     &kp U     &kp Y    &kp SEMI  &none
+// ├───────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+    &none       &hml LGUI A &hml LALT R &hml LCTRL S &hml LSHFT T &kp G    &kp M   &hmr RSHFT N &hmr RCTRL E &hmr RALT I &hmr RGUI O  &none
+// ├───────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+    &none       &kp Z      &kp X      &kp C     &kp D     &kp V         &kp K     &kp H    &kp COMMA   &kp DOT   &kp FSLH  &none
+// ╰───────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┴──────────╯
+                        &lt NAV ESC  &lt LOWER TAB  &lt RAISE BSPC    &lt RAISE RET  &lt LOWER SPACE  &kp DEL
+//                     ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
         };
 
-        keymap {
-                compatible = "zmk,keymap";
-
-                default_layer {
-                        display-name = "Default Layer";
-                        bindings = <
-   &kp TAB    &kp Q       &kp W       &kp F        &kp P         &kp B        &kp J &kp L          &kp U         &kp Y       &kp SEMI    &kp DEL
-   &kp ESC    &hml LGUI A &hml LALT R &hml LCTRL S &hml LSHIFT T &kp G        &kp M &hmr RSHIFT N  &hmr RCTRL E  &hmr RALT I &hmr RGUI O &kp SQT
-   &caps_word &kp Z       &kp X       &kp C        &kp D         &kp V        &kp K &kp H          &kp COMMA     &kp DOT     &kp FSLH    &none
-                                            &mo 3 &lt 1 SPACE &lt 2 BSPC   &lt 2 RET &lt 1 SPACE &none
-                        >;
-                };
-
-                lower_layer {
-                        display-name = "Lower Layer";
-                        // TODO add umlauts? e.g. on right side _______,   UC_AE,   UC_OE,   UC_UE,   UC_SS, _______,
-                        bindings = <
-   &trans   &kp N1          &kp N2          &kp N3           &kp N4             &kp N5       &kp N6   &kp N7            &kp N8           &kp N9 &kp N0        &trans
-   &trans   &hml LGUI TILDE &hml LALT BSLH  &hml LCTRL MINUS &hml LSHIFT EQUAL  &trans       &trans   &hmr RSHIFT LBRC  &hmr RCTRL RBRC  &trans &hmr RGUI SQT &trans
-   &trans   &trans          &trans          &trans           &trans             &trans       &trans   &trans            &trans           &trans &trans        &trans
-                                    &trans     &trans       &trans      &trans  &trans   &trans
-                        >;
-                };
-
-                raise_layer {
-                        display-name = "Raise Layer";
-
-                        bindings = <
-   &trans &kp F2 &kp F3 &kp F4 &kp F5 &kp F6         &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &trans
-   &trans &kp F1 &trans &trans &trans &trans         &trans &trans &trans &trans  &kp F12 &trans
-   &trans &trans &trans &trans &trans &trans         &trans &trans &trans &trans  &trans  &trans
-                        &trans  &trans   &trans   &trans   &trans    &trans
-                        >;
-                };
-
-                nav_layer {
-                        display-name = "Navigation Layer";
-                        bindings = <
-   &trans     &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4      &trans  &trans    &trans  &trans    &trans     &trans
-   &bt BT_CLR &trans       &trans       &trans       &trans       &trans            &trans  &kp LEFT  &kp DOWN  &kp UP  &kp RIGHT  &trans
-   &trans     &trans       &trans       &trans       &trans       &trans            &trans  &trans    &trans  &trans    &trans     &trans
-                                                         &trans  &trans  &trans    &trans  &trans   &trans
-                        >;
-                };
+        raise_layer {
+            bindings = <
+// ╭───────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮
+    &trans     &kp F2    &kp F3    &kp F4    &kp F5    &kp F6        &kp F7    &kp F8    &kp F9    &kp F10   &kp F11   &trans
+// ├───────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+    &trans     &hml LGUI F1 &hml LALT CAPSLOCK &hml LCTRL ESC &hml LSHFT TAB  &trans   &trans   &trans   &trans   &trans   &hmr RGUI F12 &trans
+// ├───────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+    &trans     &trans    &trans    &kp INS   &kp PSCRN   &trans        &trans    &trans    &trans    &trans    &trans    &trans
+// ╰───────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┴──────────╯
+                            &trans     &trans     &trans          &trans     &trans     &trans
+//                         ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
         };
+
+        lower_layer {
+            bindings = <
+// ╭───────────┬──────────┬──────────┬──────────┬──────────┬──────────╮   ╭──────────┬──────────┬──────────┬──────────┬──────────┬──────────╮
+    &trans     &kp N1    &kp N2    &kp N3    &kp N4    &kp N5        &kp N6    &kp N7    &kp N8    &kp N9    &kp N0    &trans
+// ├───────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+    &trans     &hml LGUI TILDE &hml LALT BSLH &hml LCTRL MINUS &hml LSHFT EQUAL  &trans   &trans   &hmr RSHFT LBKT &hmr RCTRL RBKT &trans   &hmr RGUI SQT &trans
+// ├───────────┼──────────┼──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┼──────────┼──────────┼──────────┤
+    &trans     &kp PIPE  &trans    &trans    &trans    &trans         &trans    &trans    &trans    &trans    &trans    &trans
+// ╰───────────┴──────────┴──────────┼──────────┼──────────┼──────────┤   ├──────────┼──────────┼──────────┴──────────┴──────────┴──────────╯
+                            &trans     &trans     &trans          &trans     &trans     &trans
+//                         ╰──────────┴──────────┴──────────╯   ╰──────────┴──────────┴──────────╯
+            >;
+        };
+
+        nav_layer {
+            bindings = <
+// ╭──────────────┬──────────────┬──────────────┬──────────────┬──────────────┬──────────────╮   ╭────────────┬────────────┬────────────┬──────────┬──────────┬──────────╮
+    &trans        &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4       &trans     &bt BT_PRV  &bt BT_NXT  &trans    &kp PSCRN &trans
+// ├──────────────┼──────────────┼──────────────┼──────────────┼──────────────┼──────────────┤   ├────────────┼────────────┼────────────┼──────────┼──────────┼──────────┤
+    &bt BT_CLR    &trans        &trans        &sys_reset    &bootloader    &trans            &trans      &kp LEFT    &kp DOWN    &kp UP    &kp RIGHT &trans
+// ├──────────────┼──────────────┼──────────────┼──────────────┼──────────────┼──────────────┤   ├────────────┼────────────┼────────────┼──────────┼──────────┼──────────┤
+    &trans        &trans        &trans        &trans        &trans        &trans             &trans      &kp HOME    &kp PG_DN    &kp PG_UP &kp END   &trans
+// ╰──────────────┴──────────────┴──────────────┼──────────────┼──────────────┼──────────────┤   ├────────────┼────────────┼────────────┴──────────┴──────────┴──────────╯
+                                        &trans        &trans        &trans             &trans      &trans      &trans
+//                                     ╰──────────────┴──────────────┴──────────────╯   ╰────────────┴────────────┴────────────╯
+            >;
+        };
+    };
 };
