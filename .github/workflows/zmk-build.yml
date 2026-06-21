@@ -31,7 +31,7 @@ jobs:
     needs: detect
     if: ${{ needs.detect.outputs.corne == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    container: ghcr.io/zmkfirmware/zmk-dev-arm:stable
+    container: docker.io/zmkfirmware/zmk-dev-arm:stable
     steps:
       - uses: actions/checkout@v4
 
@@ -67,7 +67,7 @@ jobs:
     needs: detect
     if: ${{ needs.detect.outputs.babbit36 == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    container: ghcr.io/zmkfirmware/zmk-dev-arm:latest
+    container: docker.io/zmkfirmware/zmk-dev-arm:latest
     steps:
       - uses: actions/checkout@v4
 
