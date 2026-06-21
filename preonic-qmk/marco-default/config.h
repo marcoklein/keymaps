@@ -3,7 +3,7 @@
 /** Home Row Mods **/
 
 // milliseconds to differentiate between tab and hold
-#define TAPPING_TERM 200 // default 200
+#define TAPPING_TERM 200
 
 // Apply the modifier on keys that are tapped during a short hold of a modtap
 #define PERMISSIVE_HOLD

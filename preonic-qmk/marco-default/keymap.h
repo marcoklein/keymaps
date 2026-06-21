@@ -1,45 +1,49 @@
 #pragma once
 
 #include QMK_KEYBOARD_H
-#include "keymap_german.h"
 
-enum preonic_layers {
-  _COLEMAK,
-  _SHIFT,
-  _NAV,
-  _LOWER,
-  _RAISE,
-  _ADJUST,
-  _GAME,
-  _COLEMAK_EXP
-};
-
-enum preonic_keycodes {
-  GAME = SAFE_RANGE,
-  COLEMAK,
-  COL_EXP,
-  LSPACE,
-  RSPACE,
-  MBSPC,
-  MENTER,
-  CAPS_WORD
-};
+// layers
 
 #define ADJUST MO(_ADJUST)
+#define LSPACE LT(_LOWER, KC_SPACE)
+#define RSPACE LT(_LOWER, KC_SPACE)
+#define MBSPC LT(_RAISE, KC_BSPC)
+#define MENTER LT(_RAISE, KC_ENTER)
+
+// umlauts
+
+#define UC_AE UC(0x00E4)
+#define UC_OE UC(0x00F6)
+#define UC_UE UC(0x00FC)
+#define UC_SS UC(0x00DF)
 
 // home row mods
-#define MOD_A LGUI_T(DE_A)
-#define MOD_R LALT_T(DE_R)
-#define MOD_S LCTL_T(DE_S)
-#define MOD_T LSFT_T(DE_T)
 
-#define MOD_N RSFT_T(DE_N)
-#define MOD_E RCTL_T(DE_E)
-#define MOD_I LALT_T(DE_I)
-#define MOD_O RGUI_T(DE_O)
+// _COLEMAK
+#define GUI_A LGUI_T(KC_A)
+#define ALT_R LALT_T(KC_R)
+#define CTL_S LCTL_T(KC_S)
+#define SHFT_T LSFT_T(KC_T)
 
+#define SFT_N RSFT_T(KC_N)
+#define CTL_E RCTL_T(KC_E)
+#define ALT_I LALT_T(KC_I)
+#define GUI_O RGUI_T(KC_O)
 
-bool caps_word_on;
-void caps_word_enable(void);
-void caps_word_disable(void);
-void process_caps_word(uint16_t keycode, const keyrecord_t *record);
+// _LOWER
+#define GUI_TILD LGUI_T(KC_TILD)
+#define ALT_BSLS LALT_T(KC_BSLS)
+#define CTL_MINS LCTL_T(KC_MINS)
+#define SFT_EQL LSFT_T(KC_EQL)
+
+#define SFT_LBRC RSFT_T(KC_LBRC)
+#define CTL_RBRC RCTL_T(KC_RBRC)
+#define GUI_QUOT RGUI_T(KC_QUOT)
+
+// _RAISE
+#define GUI_F1 LGUI_T(KC_F1)
+#define ALT_CAPS LALT_T(CAPS_WORD)
+#define CTL_ESC LCTL_T(KC_ESC)
+#define SFT_TAB LSFT_T(KC_TAB)
+
+#define GUI_F12 RGUI_T(KC_F12)
