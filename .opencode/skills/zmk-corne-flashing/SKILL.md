@@ -60,26 +60,59 @@ Produces two files:
 
 **Both halves must be flashed with their respective firmware.** The halves communicate over BLE — there is no TRRS cable.
 
-1. **Unplug USB from both halves.**
-2. Plug USB into **left half**, double-tap reset button, check mount:
+**IMPORTANT**: When flashing, opencode MUST pause and wait for the user between halves. Do NOT proceed to the second half until the user confirms they have switched the USB cable.
+
+#### Flash the left half
+
+1. **Tell the user**: "Unplug USB from both halves. Plug USB into the left half, then double-tap the reset button to enter bootloader."
+
+2. Check if NICENANO is mounted:
 
    ```bash
    ls /Volumes/NICENANO
    ```
 
-3. If mounted, flash the left firmware:
+   If not mounted, tell the user to double-tap reset again.
+
+3. If mounted, flash:
 
    ```bash
    cp .tmp/corne-firmware/corne_left.uf2 /Volumes/NICENANO/
    ```
 
-4. The nice!nano reboots (`cp` may produce an I/O error — normal). Verify:
+   The `cp` may produce an I/O error (`fcopyfile failed: Input/output error`) — this is NORMAL. The nice!nano reboots after accepting the file.
+
+4. Verify the flash succeeded:
 
    ```bash
    ls /Volumes/NICENANO 2>/dev/null || echo "Rebooted - flash done"
    ```
 
-5. Unplug USB from left half. Plug USB into **right half**, double-tap reset, and repeat steps 2-4 with `corne_right.uf2`.
+#### Wait for user to switch halves
+
+5. **After left half succeeds**, tell the user: "Left half done. Now unplug USB from the left half, plug USB into the right half, and double-tap reset to enter bootloader. Confirm when ready."
+
+6. **Wait for user confirmation** before proceeding.
+
+#### Flash the right half
+
+7. Check if NICENANO is mounted:
+
+   ```bash
+   ls /Volumes/NICENANO
+   ```
+
+8. Flash:
+
+   ```bash
+   cp .tmp/corne-firmware/corne_right.uf2 /Volumes/NICENANO/
+   ```
+
+9. Verify:
+
+   ```bash
+   ls /Volumes/NICENANO 2>/dev/null || echo "Rebooted - flash done"
+   ```
 
 ### 6. After flashing
 

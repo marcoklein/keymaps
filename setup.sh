@@ -2,7 +2,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-QMK_HOME="${QMK_HOME:-$HOME/code/qmk_firmware}"
+QMK_HOME="${QMK_HOME:-$SCRIPT_DIR/.tmp/qmk_firmware}"
 
 if [ ! -d "$QMK_HOME" ]; then
     echo "QMK firmware not found at $QMK_HOME"
@@ -25,8 +25,8 @@ echo "  crkbd   -> marco-default"
 echo ""
 echo ""
 echo "QMK done. You can now compile with:"
-echo "  qmk compile -kb preonic -km marco-default"
-echo "  qmk compile -kb crkbd   -km marco-default"
+echo "  qmk compile -kb preonic/rev3 -km marco-default"
+echo "  qmk compile -kb crkbd/rev1 -km marco-default"
 echo ""
 echo "ZMK keyboards (corne-zmk, babbit36-zmk) are built via GitHub Actions."
 echo "Push changes to trigger a build, or run:"
