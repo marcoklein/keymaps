@@ -44,15 +44,18 @@ jobs:
 
       - name: West init and update
         run: |
-          west init -l corne-zmk/config
+          cd corne-zmk
+          west init -l config
           west update -o=--depth=1
 
       - name: Build corne_left
         run: |
+          cd corne-zmk
           west build -s zmk/app -d build/left -b nice_nano_v2 -- -DSHIELD=corne_left
 
       - name: Build corne_right
         run: |
+          cd corne-zmk
           west build -s zmk/app -d build/right -b nice_nano_v2 -- -DSHIELD=corne_right
 
       - name: Archive firmware
@@ -60,8 +63,8 @@ jobs:
         with:
           name: corne-firmware
           path: |
-            build/left/zephyr/zmk.uf2
-            build/right/zephyr/zmk.uf2
+            corne-zmk/build/left/zephyr/zmk.uf2
+            corne-zmk/build/right/zephyr/zmk.uf2
 
   build-babbit36:
     needs: detect
@@ -80,15 +83,18 @@ jobs:
 
       - name: West init and update
         run: |
-          west init -l babbit36-zmk/config
+          cd babbit36-zmk
+          west init -l config
           west update -o=--depth=1
 
       - name: Build babbit36
         run: |
+          cd babbit36-zmk
           west build -s zmk/app -d build/babbit36 -b xiao_ble//zmk -- -DSHIELD=babbit36
 
       - name: Build settings_reset
         run: |
+          cd babbit36-zmk
           west build -s zmk/app -d build/settings_reset -b xiao_ble//zmk -- -DSHIELD=settings_reset
 
       - name: Archive firmware
@@ -96,5 +102,5 @@ jobs:
         with:
           name: babbit36-firmware
           path: |
-            build/babbit36/zephyr/zmk.uf2
-            build/settings_reset/zephyr/zmk.uf2
+            babbit36-zmk/build/babbit36/zephyr/zmk.uf2
+            babbit36-zmk/build/settings_reset/zephyr/zmk.uf2
