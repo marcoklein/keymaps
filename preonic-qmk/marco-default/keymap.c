@@ -21,7 +21,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB ,  KC_Q  , KC_W   , KC_F   ,  KC_P  ,    KC_B ,   KC_J , KC_L   , KC_U    ,    KC_Y , KC_SCLN , KC_DEL  ,
   KC_ESC ,  GUI_A , ALT_R  , CTL_S  ,  SHFT_T,    KC_G ,   KC_M , SFT_N  , CTL_E   , ALT_I  , GUI_O   , KC_QUOT ,
   KC_LSFT,  KC_Z  , KC_X   , KC_C   ,  KC_D  ,    KC_V ,   KC_K , KC_H   , KC_COMM , KC_DOT , KC_SLSH , XXXXXXX ,
-  _______, _______, _______,MO(_NAV),  LSPACE , MBSPC  , MENTER , RSPACE  ,MO(_NAV), _______, _______, _______
+  _______, _______, _______, NAV_ESC,  LOW_TAB, MBSPC  , MENTER , RSPACE  , KC_DEL , _______, _______, _______
 ),
 
 [_LOWER] = LAYOUT_preonic_grid(

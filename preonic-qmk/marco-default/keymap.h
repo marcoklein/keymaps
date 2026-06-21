@@ -5,6 +5,8 @@
 // layers
 
 #define ADJUST MO(_ADJUST)
+#define NAV_ESC LT(_NAV, KC_ESC)
+#define LOW_TAB LT(_LOWER, KC_TAB)
 #define LSPACE LT(_LOWER, KC_SPACE)
 #define RSPACE LT(_LOWER, KC_SPACE)
 #define MBSPC LT(_RAISE, KC_BSPC)

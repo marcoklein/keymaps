@@ -27,7 +27,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     CAPS_WORD,    KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                         KC_K,    KC_H, KC_COMM,  KC_DOT, KC_SLSH, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         MO(_NAV),  LSPACE,   MBSPC,     MENTER,  RSPACE, XXXXXXX
+                                         NAV_ESC,  LOW_TAB,   MBSPC,     MENTER,  RSPACE, KC_DEL
                                       //`--------------------------'  `--------------------------'
   ),
 
