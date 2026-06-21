@@ -45,7 +45,7 @@ jobs:
       - name: West init and update
         run: |
           cd corne-zmk
-          west init -l config
+          west init -l .
           west update
 
       - name: Build corne_left
@@ -84,7 +84,7 @@ jobs:
       - name: West init and update
         run: |
           cd babbit36-zmk
-          west init -l config
+          west init -l .
           west update
 
       - name: Build babbit36
