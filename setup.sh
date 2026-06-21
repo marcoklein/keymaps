@@ -23,6 +23,11 @@ ln -sfn "$SCRIPT_DIR/crkbd-qmk/marco-default" "$QMK_HOME/keyboards/crkbd/keymaps
 echo "  crkbd   -> marco-default"
 
 echo ""
-echo "Done. You can now compile with:"
+echo ""
+echo "QMK done. You can now compile with:"
 echo "  qmk compile -kb preonic -km marco-default"
 echo "  qmk compile -kb crkbd   -km marco-default"
+echo ""
+echo "ZMK keyboards (corne-zmk, babbit36-zmk) are built via GitHub Actions."
+echo "Push changes to trigger a build, or run:"
+echo "  gh workflow run zmk-build.yml -R marcoklein/keymaps"
