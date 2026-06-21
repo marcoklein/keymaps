@@ -7,8 +7,9 @@ description: Use when writing, editing, or reformatting ZMK (.keymap) or QMK (ke
 
 ## Overview
 
-W=12 fixed-width columns, Unicode box drawings, `│` column separators.
-Each binding is right-padded to exactly 12 chars. >12 chars → `#define` alias.
+W=12 fixed-width columns, Unicode box drawings. Each binding is right-padded to exactly 12 chars. >12 chars → `#define` alias.
+
+**Binding line separators**: `│` for QMK (C comments allow it). For ZMK, use **space only** — the devicetree parser rejects `│` inside `<...>` blocks. ZMK `│` separators go only in `//` comment lines (box drawings).
 
 ## Column rules
 
@@ -16,10 +17,11 @@ Each binding is right-padded to exactly 12 chars. >12 chars → `#define` alias.
 - **Padding**: right-pad to W with trailing spaces.
   - ZMK: `&kp Q` → `"&kp Q       "` (5+7). No commas.
   - QMK: `KC_TAB,` → `"KC_TAB,     "` (7+5). Comma counts toward W.
-- **Separator**: `│` between every column within a half.
-- **Edge**: `│` at both ends of each half: `│<C0>│<C1>│…│<C4>│`
-- **Gap**: 3 spaces between halves (`│   │`).
-- **Indent**: 3 spaces (aligns leading `│` under box-drawing `╭`).
+- **ZMK binding lines**: Space-padded only. No `│` — the devicetree parser inside `<...>` rejects non-reference characters. Use space to separate columns (e.g. `&kp Q       &kp W       &kp F`). `│` separators go in `//` comment lines exclusively.
+- **QMK binding lines**: `│` between every column within a half: `│<C0>│<C1>│…│<C4>│`
+- **Edge**: ZMK binding lines omit edge `│` and start at W=12 grid position (no leading `│`). QMK has leading `│` at both half edges.
+- **Gap**: 3 spaces between halves (between last column of left half and first column of right half).
+- **Indent**: 3 spaces ZMK, 5 spaces QMK. Binding line first column starts after indent.
 - **Zero overflow**: every binding must be ≤12 chars. Use aliases for anything longer.
 
 ## Aliases
@@ -87,8 +89,8 @@ Order: `default → raise → lower → nav → adjust`. Blank line between laye
 
 ## Indentation
 
-- **ZMK**: 3 spaces (aligns `│` under `╭` at position 3: `// ╭` → `   │`).
-- **QMK**: 5 spaces (aligns `│` under `╭` at position 5: `  // ╭` → `     │`).
+- **ZMK**: 3 spaces indent (binding line first column position). `//` comment lines start at same indent for box drawings (e.g. `// ╭`). No `│` on binding lines — column alignment uses W=12 spacing.
+- **QMK**: 5 spaces indent (aligns `│` under `╭` at position 5: `  // ╭` → `     │`).
 - Thumb lines: skip = `INDENT + T×(W+1)` spaces.
 - Box drawings use the same indent as their binding lines.
 
