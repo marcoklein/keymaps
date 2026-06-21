@@ -44,7 +44,7 @@ jobs:
 
       - name: West init and update
         run: |
-          west init -l corne-zmk
+          west init -l corne-zmk/config
           west update -o=--depth=1
 
       - name: Build corne_left
@@ -67,7 +67,7 @@ jobs:
     needs: detect
     if: ${{ needs.detect.outputs.babbit36 == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    container: docker.io/zmkfirmware/zmk-dev-arm:latest
+    container: docker.io/zmkfirmware/zmk-dev-arm:stable
     steps:
       - uses: actions/checkout@v4
 
@@ -80,7 +80,7 @@ jobs:
 
       - name: West init and update
         run: |
-          west init -l babbit36-zmk
+          west init -l babbit36-zmk/config
           west update -o=--depth=1
 
       - name: Build babbit36
