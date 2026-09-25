@@ -6,7 +6,8 @@ All my keyboard keymaps in one place.
 
 | Keyboard | Firmware | Controller | Keymap |
 |----------|----------|------------|--------|
-| Preonic  | QMK      | —          | `preonic-qmk/marco-default/` — Colemak with German keys, home-row mods, custom shift layer |
+| Preonic  | QMK      | —          | `preonic-qmk/marco-default/` - Colemak with German keys, home-row mods, custom shift layer |
+| Preonic  | QMK      | —          | `preonic-qmk/auctioneer/` - PrehKeyTec auctioneer keyboard emulator |
 | Corne    | QMK      | Pro Micro  | `crkbd-qmk/marco-default/` — Colemak with home-row mods, OLED display, unicode, split |
 | Corne    | ZMK      | nice!nano v2 | `corne-zmk/` — Wireless Colemak, home-row mods, 4 layers, split BLE |
 | Babbit36 | ZMK      | XIAO BLE   | `babbit36-zmk/` — Wireless Colemak, 4 layers, custom shield, single PCB |
@@ -47,6 +48,7 @@ This symlinks the keymap directories into `qmk_firmware/keyboards/<kbd>/keymaps/
 
 ```bash
 qmk compile -kb preonic/rev3 -km marco-default
+qmk compile -kb preonic/rev3 -km auctioneer
 qmk compile -kb crkbd       -km marco-default
 ```
 
@@ -54,6 +56,7 @@ qmk compile -kb crkbd       -km marco-default
 
 ```bash
 qmk flash -kb preonic/rev3 -km marco-default
+qmk flash -kb preonic/rev3 -km auctioneer
 qmk flash -kb crkbd        -km marco-default
 ```
 

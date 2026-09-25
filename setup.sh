@@ -15,7 +15,9 @@ echo "Linking keymaps into $QMK_HOME/keyboards..."
 # Preonic
 mkdir -p "$QMK_HOME/keyboards/preonic/keymaps"
 ln -sfn "$SCRIPT_DIR/preonic-qmk/marco-default" "$QMK_HOME/keyboards/preonic/keymaps/marco-default"
+ln -sfn "$SCRIPT_DIR/preonic-qmk/auctioneer" "$QMK_HOME/keyboards/preonic/keymaps/auctioneer"
 echo "  preonic -> marco-default"
+echo "  preonic -> auctioneer"
 
 # Corne (crkbd)
 mkdir -p "$QMK_HOME/keyboards/crkbd/keymaps"
@@ -26,6 +28,7 @@ echo ""
 echo ""
 echo "QMK done. You can now compile with:"
 echo "  qmk compile -kb preonic/rev3 -km marco-default"
+echo "  qmk compile -kb preonic/rev3 -km auctioneer"
 echo "  qmk compile -kb crkbd/rev1 -km marco-default"
 echo ""
 echo "ZMK keyboards (corne-zmk, babbit36-zmk) are built via GitHub Actions."

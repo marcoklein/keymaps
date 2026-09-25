@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Preonic auctioneer layout</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: Inter, system-ui, sans-serif;
+        background: #171918;
+        color: #f4f0e7;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      main { width: min(100%, 1040px); }
+      h1 { margin: 0 0 6px; font-size: clamp(20px, 3vw, 30px); }
+      p { margin: 0 0 18px; color: #aaa99f; }
+
+      .keyboard {
+        display: grid;
+        grid-template-columns: repeat(12, minmax(54px, 1fr));
+        gap: 7px;
+        padding: 14px;
+        overflow-x: auto;
+        border: 1px solid #56574f;
+        border-radius: 12px;
+        background: #292b29;
+        box-shadow: 0 18px 45px #0008;
+      }
+
+      .key {
+        min-width: 54px;
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+        padding: 5px;
+        border: 1px solid #74746c;
+        border-bottom-width: 4px;
+        border-radius: 7px;
+        background: #e3dfd3;
+        color: #272925;
+        font-size: 11px;
+        font-weight: 750;
+        line-height: 1.05;
+        text-align: center;
+      }
+
+      .start { background: #e5b762; border-color: #987136; }
+      .quantity { background: #b9d6cd; border-color: #658d81; }
+      .abneh { background: #c6b8dc; border-color: #776691; }
+      .sale { background: #ef9a8c; border-color: #a5574c; }
+      .unused { opacity: .52; background: #aaa; }
+      .danger { background: #e45a4f; border-color: #8f2e28; color: white; }
+
+      .left-edge { margin-left: 7px; }
+      .right-edge { margin-right: 7px; }
+
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 16px;
+        color: #c7c4bb;
+        font-size: 13px;
+      }
+
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 6px;
+        border-radius: 3px;
+        vertical-align: -1px;
+        background: var(--swatch, #e3dfd3);
+      }
+
+      @media (max-width: 760px) {
+        body { place-items: start center; padding: 14px; }
+        .keyboard { grid-template-columns: repeat(12, 54px); }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Preonic Versteigerer-Tastatur</h1>
+      <p>5 rows × 12 columns. Hover a key to see the emitted production shortcut.</p>
+
+      <section class="keyboard" aria-label="Preonic auctioneer key layout">
+        <div class="key" title="F8">R1−</div>
+        <div class="key" title="F6">R1+</div>
+        <div class="key right-edge" title="Shift+Alt+F1">Wagen</div>
+        <div class="key" title="F7">1 EUR</div>
+        <div class="key" title="Shift+P">Packen</div>
+        <div class="key abneh" title="Shift+Q, release, Digit5">ABN 5</div>
+        <div class="key" title="Shift+Alt+F2">Lfs</div>
+        <div class="key" title="Shift+Alt+F3">Nächste<br>Partie</div>
+        <div class="key danger" title="Shift+Alt+F5">Stopp</div>
+        <div class="key" title="Shift+Alt+F7">VST</div>
+        <div class="key sale" title="Shift+Alt+F11">C3</div>
+        <div class="key" title="Backspace">BS</div>
+
+        <div class="key start" title="Shift+U, release, Digit7">Start 7</div>
+        <div class="key start" title="Shift+U, release, Digit8">Start 8</div>
+        <div class="key start right-edge" title="Shift+U, release, Digit9">Start 9</div>
+        <div class="key" title="F9">50 Cent</div>
+        <div class="key sale" title="Shift+S, Shift+T">STG</div>
+        <div class="key abneh" title="Shift+Q, release, Digit4">ABN 4</div>
+        <div class="key" title="Shift+Alt+F6">Lfs-Info</div>
+        <div class="key quantity" title="Numpad7">Menge 7</div>
+        <div class="key quantity" title="Numpad8">Menge 8</div>
+        <div class="key quantity" title="Numpad9">Menge 9</div>
+        <div class="key sale" title="Shift+Alt+F9">C2</div>
+        <div class="key unused" title="Shift+S, Shift+K; Wagen-Rest is not handled by the current app">Express</div>
+
+        <div class="key start" title="Shift+U, release, Digit4">Start 4</div>
+        <div class="key start" title="Shift+U, release, Digit5">Start 5</div>
+        <div class="key start right-edge" title="Shift+U, release, Digit6">Start 6</div>
+        <div class="key" title="F5">10 Cent</div>
+        <div class="key" title="F4">2 Runden</div>
+        <div class="key abneh" title="Shift+Q, release, Digit3">ABN 3</div>
+        <div class="key abneh" title="Shift+Q, release, Digit0">ABN 10</div>
+        <div class="key quantity" title="Numpad4">Menge 4</div>
+        <div class="key quantity" title="Numpad5">Menge 5</div>
+        <div class="key quantity" title="Numpad6">Menge 6</div>
+        <div class="key sale" title="Shift+Alt+F10">C1</div>
+        <div class="key sale" title="Shift+S, Shift+E">ER1</div>
+
+        <div class="key start" title="Shift+U, release, Digit1">Start 1</div>
+        <div class="key start" title="Shift+U, release, Digit2">Start 2</div>
+        <div class="key start right-edge" title="Shift+U, release, Digit3">Start 3</div>
+        <div class="key" title="F3">5 Cent</div>
+        <div class="key" title="F2">1 Runde</div>
+        <div class="key abneh" title="Shift+Q, release, Digit2">ABN 2</div>
+        <div class="key abneh" title="Shift+Q, release, Digit8">ABN 8</div>
+        <div class="key quantity" title="Numpad1">Menge 1</div>
+        <div class="key quantity" title="Numpad2">Menge 2</div>
+        <div class="key quantity" title="Numpad3">Menge 3</div>
+        <div class="key unused" title="Unassigned">—</div>
+        <div class="key sale" title="Numpad +">PR</div>
+
+        <div class="key danger" title="Shift+U, Shift+R">UV</div>
+        <div class="key start" title="Shift+U, release, Digit0">Start 0</div>
+        <div class="key danger right-edge" title="Shift+U, Shift+R">UV</div>
+        <div class="key" title="F1">1 Cent</div>
+        <div class="key" title="F10">0 Runden</div>
+        <div class="key abneh" title="Shift+Q, release, Digit1">ABN 1</div>
+        <div class="key abneh" title="Shift+Q, release, Digit6">ABN 6</div>
+        <div class="key unused" title="Unassigned">—</div>
+        <div class="key quantity" title="Numpad0">Menge 0</div>
+        <div class="key unused" title="Unassigned">—</div>
+        <div class="key unused" title="Unassigned">—</div>
+        <div class="key sale" title="Numpad Enter">ER</div>
+      </section>
+
+      <div class="legend">
+        <span style="--swatch:#e5b762">Clock start</span>
+        <span style="--swatch:#b9d6cd">Quantity</span>
+        <span style="--swatch:#c6b8dc">ABN-EH</span>
+        <span style="--swatch:#ef9a8c">Sale action</span>
+        <span style="--swatch:#aaa">Not handled yet</span>
+      </div>
+    </main>
+  </body>
+</html>
